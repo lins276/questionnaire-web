@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>问卷管理后台 · Admin</title>
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+  <!-- 未登录：登录页 -->
+  <div id="loginView" class="login-wrap" hidden>
+    <div class="login-card">
+      <div class="login-title">🔒 问卷管理后台</div>
+      <div class="login-sub">正大杯问卷数据管理（仅管理员可访问）</div>
+      <form id="loginForm" class="login-form" autocomplete="off">
+        <label>管理密码
+          <input type="password" name="password" id="adminPw" placeholder="输入管理密码" autofocus />
+        </label>
+        <button type="submit" class="btn btn--primary">登录</button>
+        <div class="login-error" id="loginError" hidden>密码错误</div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 已登录：管理台 -->
+  <div id="adminView" hidden>
+    <header class="admin-header">
+      <h1>问卷管理后台</h1>
+      <div class="admin-header__right">
+        <span class="admin-header__tip">刷新数据</span>
+        <button id="btnRefresh" class="btn btn--ghost">刷新</button>
+        <button id="btnExportCsv" class="btn">导出 CSV</button>
+        <button id="btnExportJson" class="btn">导出 JSON</button>
+        <button id="btnLogout" class="btn btn--ghost">退出</button>
+      </div>
+    </header>
+
+    <!-- Stats -->
+    <section class="stats" id="statsBox"></section>
+
+    <!-- Surveys Table -->
+    <section class="table-wrap">
+      <div class="table-toolbar">
+        <span>共 <strong id="surveyCount">0</strong> 份答卷</span>
+        <div class="spacer"></div>
+        <input id="qFilter" class="text-input" placeholder="按编号 / 分支 / 关键词搜索..." />
+        <button id="btnClear" class="btn btn--accent btn--sm">⚠ 清空全部</button>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="width:140px">抽奖编号</th>
+            <th style="width:70px">分支</th>
+            <th style="width:90px">时长(秒)</th>
+            <th style="width:130px">注意力检测</th>
+            <th>答卷快照（展开查看）</th>
+            <th style="width:90px">提交时间</th>
+            <th style="width:60px">操作</th>
+          </tr>
+        </thead>
+        <tbody id="surveyBody"></tbody>
+      </table>
+      <div class="empty-tip" id="emptyTip" hidden>暂无答卷数据 —— 让受访者填写并提交后会出现在这里</div>
+    </section>
+
+    <footer class="admin-footer">
+      问卷后端 <code>server.js</code> · 存储 <code>surveys.json</code> · 当前运行端口 <code id="portHint">-</code>
+    </footer>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>

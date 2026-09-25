@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>问卷二维码 · 扫码填写</title>
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+      background: linear-gradient(160deg, #1a3a5c 0%, #0e2440 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+      color: #fff;
+    }
+    h1 {
+      font-family: "Songti SC", serif;
+      font-size: 28px;
+      text-align: center;
+      margin-bottom: 10px;
+      letter-spacing: 2px;
+    }
+    .sub { font-size: 13px; opacity: 0.75; margin-bottom: 40px; text-align: center; }
+
+    .qr-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 28px;
+      width: 100%;
+      max-width: 640px;
+    }
+
+    .qr-card {
+      background: #fff;
+      color: #1a3a5c;
+      border-radius: 14px;
+      padding: 28px 20px;
+      text-align: center;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.3);
+    }
+    .qr-card__label {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #b85c38;
+      margin-bottom: 6px;
+    }
+    .qr-card__title {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: #1a3a5c;
+    }
+    .qr-card__box {
+      display: inline-block;
+      padding: 12px;
+      background: #f5f6f9;
+      border-radius: 10px;
+    }
+    .qr-card__box canvas, .qr-card__box img { display: block; }
+    .qr-card__link {
+      margin-top: 14px;
+      font-size: 12px;
+      color: #52606d;
+      word-break: break-all;
+      line-height: 1.5;
+    }
+    .qr-card__link a {
+      color: #1a3a5c;
+      text-decoration: none;
+      border-bottom: 1px dashed #c9d0d9;
+    }
+
+    .qr-card--admin .qr-card__title { color: #b85c38; }
+    .qr-card--admin .qr-card__label { color: #8b6b3d; }
+
+    .tip {
+      margin-top: 36px;
+      font-size: 12px;
+      opacity: 0.6;
+      text-align: center;
+      max-width: 480px;
+      line-height: 1.8;
+    }
+    .tip code {
+      background: rgba(255,255,255,0.12);
+      padding: 1px 6px;
+      border-radius: 3px;
+      font-family: Consolas, monospace;
+    }
+  </style>
+</head>
+<body>
+  <h1>正大杯问卷 · 扫码填写</h1>
+  <div class="sub">手机微信 / 相机扫一扫，直接跳转问卷页面</div>
+
+  <div class="qr-grid">
+    <div class="qr-card">
+      <div class="qr-card__label">受访者入口</div>
+      <div class="qr-card__title">📮 AI 大模型课外辅导消费影响问卷</div>
+      <div class="qr-card__box"><div id="qrSurvey"></div></div>
+      <div class="qr-card__link">
+        <a id="linkSurvey" target="_blank"></a>
+      </div>
+    </div>
+
+    <div class="qr-card qr-card--admin">
+      <div class="qr-card__label">管理员入口 · 密码 zhengda2026</div>
+      <div class="qr-card__title">🔒 数据后台</div>
+      <div class="qr-card__box"><div id="qrAdmin"></div></div>
+      <div class="qr-card__link">
+        <a id="linkAdmin" target="_blank"></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="tip">
+    ⚠ 手机和电脑必须在 <b>同一个 Wi-Fi</b> 下才能扫通。<br/>
+    服务器未运行？双击项目文件夹里的 <code>start.bat</code> 启动。<br/>
+    电脑换了网络？<a href="#" onclick="location.reload()" style="color:#fff;border-bottom:1px dashed rgba(255,255,255,0.4);">刷新此页面</a> 重新生成二维码。
+  </div>
+
+  <script>
+    // 自动探测局域网 IP（从页面 URL 推断，如果是 localhost 就提示用户改用 start.bat 提供的局域网链接）
+    const host = location.hostname;
+    const port = location.port || '3000';
+    const isLocalhost = (host === 'localhost' || host === '127.0.0.1');
+
+    // 如果从 start.bat 启动（localhost），提示用户改用局域网 IP 扫
+    const ip4 = ['10.225.209.154']; // 你的校园网 IP，手机同 Wi-Fi 用这个
+
+    // 选对的那个 base
+    let base;
+    if (!isLocalhost) base = `${location.protocol}//${host}:${port}`;
+    else base = `http://${ip4[0]}:${port}`;
+
+    const urls = {
+      survey: `${base}/`,
+      admin:  `${base}/admin.html`,
+    };
+
+    new QRCode(document.getElementById('qrSurvey'), {
+      text: urls.survey, width: 220, height: 220,
+      correctLevel: QRCode.CorrectLevel.M,
+    });
+    new QRCode(document.getElementById('qrAdmin'), {
+      text: urls.admin, width: 220, height: 220,
+      correctLevel: QRCode.CorrectLevel.M,
+    });
+
+    document.getElementById('linkSurvey').textContent = urls.survey;
+    document.getElementById('linkSurvey').href = urls.survey;
+    document.getElementById('linkAdmin').textContent  = urls.admin;
+    document.getElementById('linkAdmin').href  = urls.admin;
+
+    if (isLocalhost) {
+      const tip = document.querySelector('.tip');
+      tip.innerHTML =
+        '📌 你现在在电脑上打开的是 localhost，<b>手机扫不通</b>。<br/>' +
+        '请用右上角 <b>start.bat</b> 启动服务器，然后在手机浏览器直接输入：<br/>' +
+        '<code>' + ip4[0] + ':' + port + '</code>（或扫上方二维码）<br/>' +
+        '手机和电脑必须在同一个 Wi-Fi 下。';
+    }
+  </script>
+</body>
+</html>

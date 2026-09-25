@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="正大杯问卷 — AI 大模型对大学生课外辅导消费影响调查问卷" />
+  <title>AI大模型对大学生课外辅导消费影响调查问卷</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- 顶部进度条（固定，所有 section 共享） -->
+  <div class="progress-bar" aria-hidden="true">
+    <div class="progress-bar__fill" id="progressFill"></div>
+  </div>
+  <div class="progress-info" id="progressInfo" aria-hidden="true">0 / 55</div>
+
+  <div class="survey-wrapper">
+    <main id="root" role="main"></main>
+  </div>
+
+  <!-- 数据层（挂到 window.SECTIONS 等） -->
+  <script src="questions.js"></script>
+  <!-- 逻辑层（引用数据层） -->
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "name": "ai-tutoring-survey",
+  "version": "1.0.0",
+  "description": "正大杯问卷 · 后端 + Admin 页（纯 JSON 文件存储，零原生依赖）",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "express": "^4.21.1"
+  }
+}

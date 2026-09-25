@@ -1,0 +1,11 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "rewrites": [
+    { "source": "/api/admin/export", "destination": "/api/admin/export.js" },
+    { "source": "/api/admin/surveys", "destination": "/api/admin/surveys.js" },
+    { "source": "/api/admin/:path+", "destination": "/api/admin/:path.js" },
+    { "source": "/api/survey/:path+", "destination": "/api/survey/:path.js" }
+  ],
+  "cleanUrls": true,
+  "trailingSlash": false
+}
